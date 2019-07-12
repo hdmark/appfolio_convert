@@ -28,11 +28,7 @@ export default {
     property
   },
   data: () => {
-    return {
-      pagination: {
-        rowsPerPage: 10
-      }
-    };
+    return {};
   },
   methods: {
     convertArrayOfObjectsToCSV(args) {

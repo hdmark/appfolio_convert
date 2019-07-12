@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card>
-      <v-data-table :headers="headers" :items="property.txs">
+      <v-data-table :headers="headers" :items="property.txs" :pagination.sync="pagination">
         <template v-slot:items="props">
           <td>{{props.item.date}}</td>
           <td>{{props.item.payee}}</td>
@@ -22,6 +22,9 @@ export default {
   props: ["property"],
   data: () => {
     return {
+      pagination: {
+        rowsPerPage: -1
+      },
       headers: [
         { text: "Date", value: "date" },
         { text: "Payee", value: "payee" },
