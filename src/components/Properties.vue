@@ -1,21 +1,24 @@
 <template>
-  <div>
-    <v-expansion-panel>
-      <v-expansion-panel-content v-for="(prop,idx) in propertyData" :key="idx">
-        <!-- <v-icon color="primary">save_alt</v-icon> -->
+  <v-expansion-panel>
+    <v-expansion-panel-content v-for="(prop,idx) in propertyData" :key="idx">
+      <!-- <v-icon color="primary">save_alt</v-icon> -->
 
-        <template v-slot:header>
+      <template v-slot:header>
+        <div>
           Property: {{prop.property}} -
           Period: {{prop.period}}
-          <v-btn color="success">Success</v-btn>
-          <v-icon color="primary">save_alt</v-icon>
-        </template>
-        <v-card>
-          <property :property="prop"></property>
-        </v-card>
-      </v-expansion-panel-content>
-    </v-expansion-panel>
-  </div>
+          <v-btn class="download-btn" color="success" @click="downloadCSV(prop)">
+            Download CSV
+            <v-icon color="primary">save_alt</v-icon>
+          </v-btn>
+          <!--  -->
+        </div>
+      </template>
+      <v-card>
+        <property :property="prop"></property>
+      </v-card>
+    </v-expansion-panel-content>
+  </v-expansion-panel>
 </template>
 <script>
 import property from "@/components/Property";
@@ -84,12 +87,10 @@ export default {
   }
 };
 </script>
+
 <style lang="scss" scoped>
-.v-expansion-panel__header__icon {
-  margin-left: auto;
-}
-.v-btn {
-  margin-left: auto;
-  width: 2rem;
+.download-btn {
+  float: right;
 }
 </style>
+
