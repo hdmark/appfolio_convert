@@ -16,6 +16,9 @@
       CLICK
       <input ref="file" multiple type="file" @change="loadTextFromFile" />
     </label>
+    <v-alert v-model="loading" color="info" transition="fade-transition">
+      <v-icon>sync</v-icon>&nbsp; LOADING
+    </v-alert>
     <properties v-if="propertyData.length > 0" :propertyData="propertyData"></properties>
   </drop>
 </template>
@@ -40,6 +43,7 @@ export default {
     return {
       propertyData: [],
       files: [],
+      loading: false,
       dropzoneOptions: {
         url: "/post",
         thumbnailWidth: 150,
@@ -64,11 +68,14 @@ export default {
           this.propertyData.push(...property);
         }
       }
+      this.loading = false;
       console.log("finished");
     }
   },
   methods: {
     async handleDrop(data, event) {
+      this.loading = true;
+
       event.preventDefault();
       const files = event.dataTransfer.files;
       this.files = [];
@@ -76,6 +83,8 @@ export default {
       this.files.push(...files);
     },
     async loadTextFromFile(ev) {
+      this.loading = true;
+
       const files = ev.target.files;
       this.files = [];
 
