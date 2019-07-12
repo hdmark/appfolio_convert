@@ -7,8 +7,8 @@
         <div>
           Property: {{prop.property}} -
           Period: {{prop.period}}
-          <v-btn class="download-btn" color="success" @click="downloadCSV(prop)">
-            Download CSV
+          <v-btn small @click.native.stop="downloadCSV(prop)" class="download-btn" color="success">
+            Download CSV &nbsp;&nbsp;&nbsp;
             <v-icon color="primary">save_alt</v-icon>
           </v-btn>
           <!--  -->

@@ -11,15 +11,13 @@
   >
     <properties v-if="propertyData.length > 0" :propertyData="propertyData"></properties>
   </vue-dropzone>-->
-  <div>
+  <drop v-on:click="$refs.file.click()" class="drop" @drop="handleDrop">
     <label class="text-reader">
       CLICK
       <input ref="file" multiple type="file" @change="loadTextFromFile" />
     </label>
-    <drop v-on:click="$refs.file.click()" class="drop" @drop="handleDrop">DROP</drop>
-
     <properties v-if="propertyData.length > 0" :propertyData="propertyData"></properties>
-  </div>
+  </drop>
 </template>
 
 <script>
@@ -107,8 +105,8 @@ export default {
 </script>
 <style lang="scss" >
 .drop {
-  width: 100px;
-  height: 100px;
+  width: 100%;
+  height: 100%;
   border: 1px solid red;
 }
 .text-reader {
