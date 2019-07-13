@@ -59,11 +59,11 @@ let processPDF = text => {
       } else if (balance == null) {
         // first row between beginning balance and real data
         balance = parseFloat(str.replace(/,/g, ''));
-      } else if (!Object.keys(bounds).includes(str)) {
+      } else if (!Object.keys(bounds).includes(str) && !/Page.*of/.test(str)) {
         // check if item is in same column as late item, append
         //if not
 
-        if (x > bounds['Balance'] && !(str.indexOf('Page') == 0)) {
+        if (x > bounds['Balance']) {
           row.balance += str;
           table.push(row);
         } else if (x > bounds['Expense']) {
