@@ -53,7 +53,7 @@ export default {
         keys.forEach(function(key) {
           if (ctr > 0) result += columnDelimiter;
 
-          result += item[key];
+          result += '"' + item[key] + '"';
           ctr++;
         });
         result += lineDelimiter;
