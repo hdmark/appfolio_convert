@@ -1,33 +1,19 @@
 <template>
-  <!-- <vue-dropzone
-    ref="myVueDropzone"
-    id="dropzone"
-    class="dropzone"
-    :options="dropzoneOptions"
-    @vdropzone-file-added="vfileAdded"
-    :useCustomSlot="true"
-    @vdropzone-success-multiple="vfileSuccessful"
-    @vdropzone-removed-file="vfileRemoved"
-  >
-    <properties v-if="propertyData.length > 0" :propertyData="propertyData"></properties>
-  </vue-dropzone>-->
-  <drop v-on:click="$refs.file.click()" class="drop" @drop="handleDrop">
-    <label class="text-reader">
-      CLICK
-      <input ref="file" multiple type="file" @change="loadTextFromFile" />
-    </label>
-    <v-alert v-model="loading" color="info" transition="fade-transition">
+  <drop class="drop" @drop="handleDrop">
+    <v-alert v-model="loading" color="info">
       <v-icon>sync</v-icon>&nbsp; LOADING
     </v-alert>
     <properties v-if="propertyData.length > 0" :propertyData="propertyData"></properties>
+    <div
+      class="dragMessage"
+      v-else
+    >Drag and drop owners statements into this area or click Convert Files</div>
   </drop>
 </template>
 
 <script>
 // @ is an alias to /src
-// import UploadBox from "@/components/UploadBox.vue";
-// import vue2Dropzone from "vue2-dropzone";
-// import "vue2-dropzone/dist/vue2Dropzone.min.css";
+
 import properties from "@/components/Properties";
 import { parser } from "../util/parse";
 import { Drop } from "vue-drag-drop";
@@ -41,74 +27,24 @@ export default {
 
   data: function() {
     return {
-      propertyData: [],
-      files: [],
-      loading: false,
-      dropzoneOptions: {
-        url: "/post",
-        thumbnailWidth: 150,
-        maxFilesize: 1,
-        clickable: false,
-        headers: { "My-Awesome-Header": "header value" },
-        // maxFiles: 2,
-        uploadMultiple: true,
-        // addRemoveLinks: true,
-        createImageThumbnails: false
-      }
+      loading: false
     };
   },
-
-  watch: {
-    // whenever question changes, this function will run
-    files: async function() {
-      console.log("processing");
-      for (let file of this.files) {
-        if (file.type == "application/pdf") {
-          let property = await parser(file);
-          this.propertyData.push(...property);
-        }
-      }
+  computed: {
+    propertyData() {
       this.loading = false;
-      console.log("finished");
+      return this.$store.getters.properties;
     }
   },
+
   methods: {
     async handleDrop(data, event) {
       this.loading = true;
 
       event.preventDefault();
       const files = event.dataTransfer.files;
-      this.files = [];
-
-      this.files.push(...files);
-    },
-    async loadTextFromFile(ev) {
-      this.loading = true;
-
-      const files = ev.target.files;
-      this.files = [];
-
-      this.files.push(...files);
-    },
-    removeAll() {
-      this.$refs.myVueDropzone.removeAllFiles();
-      this.propertyData = [];
+      this.$store.dispatch("analyzeStatements", [...files]);
     }
-    // vfileAdded(file) {},
-    // vActionHandler() {
-    //   return;
-    // },
-    // async vfileSuccessful(files, response) {
-    //   console.log("success", files);
-    //   for (let file of files) {
-    //     if (file.type == "application/pdf") {
-    //       let property = await parser(file);
-    //       this.propertyData.push(...property);
-    //     }
-    //   }
-    //   this.$refs.myVueDropzone.removeAllFiles();
-    // },
-    // vfileRemoved(file, error, xhr) {}
   }
 };
 </script>
@@ -142,9 +78,8 @@ export default {
   height: 100%;
   width: 100%;
 }
-.dropzone {
-  height: 100%;
-  width: 100%;
+.dragMessage {
+  text-align: center;
 }
 </style>
 

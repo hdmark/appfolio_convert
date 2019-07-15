@@ -1,7 +1,7 @@
 <template>
   <v-app id="app">
     <v-app id="inspire">
-      <v-navigation-drawer fixed v-model="drawer" app>
+      <v-navigation-drawer temporary v-model="drawer" app>
         <v-toolbar flat>
           <v-list>
             <!-- <v-list-tile>
@@ -28,6 +28,17 @@
       <v-toolbar color="indigo" dark fixed app>
         <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
         <v-toolbar-title>Appfolio Owner Statement Conversion Tool</v-toolbar-title>
+        <label class="text-reader">
+          Process Statements
+          <input
+            ref="file"
+            accept=".pdf"
+            multiple
+            type="file"
+            @change="loadTextFromFile"
+          />
+        </label>
+        <v-btn @click="removeAll">Remove All</v-btn>
       </v-toolbar>
       <v-content>
         <router-view></router-view>
@@ -49,6 +60,15 @@ export default {
       ],
       right: null
     };
+  },
+  methods: {
+    removeAll() {
+      this.$store.dispatch("clearProperties");
+    },
+    async loadTextFromFile(ev) {
+      const files = ev.target.files;
+      this.$store.dispatch("analyzeStatements", [...files]);
+    }
   }
 };
 </script>
