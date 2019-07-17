@@ -10,7 +10,9 @@
 //   font-size: 62.5%; // 1rem = 10px, 10px/16px = 62.5%
 //   // color: blue;
 // }
-
+html {
+  overflow-y: auto;
+}
 * {
   // color: blue;
   // margin: 100px;

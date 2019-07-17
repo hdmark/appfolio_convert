@@ -1,13 +1,16 @@
 <template>
   <drop class="drop" @drop="handleDrop">
-    <v-alert v-model="loading" color="info">
-      <v-icon>sync</v-icon>&nbsp; LOADING
+    <v-alert id="loading" v-model="loading">
+      <v-content class="loading__content">LOADING</v-content>
     </v-alert>
-    <properties v-if="propertyData.length > 0" :propertyData="propertyData"></properties>
-    <div
-      class="dragMessage"
-      v-else
-    >Drag and drop owners statements into this area or click Convert Files</div>
+    <div class="properties-container" v-if="propertyData.length > 0">
+      <properties :propertyData="propertyData"></properties>
+    </div>
+    <h1 class="dragMessage" v-else>
+      Drag and drop owners statements
+      into this area
+      or click Upload
+    </h1>
   </drop>
 </template>
 
@@ -39,10 +42,13 @@ export default {
 
   methods: {
     async handleDrop(data, event) {
+      console.log("data", data);
       this.loading = true;
-
       event.preventDefault();
       const files = event.dataTransfer.files;
+      if (files[0].type == "application/pdf") {
+        this.loading = true;
+      }
       this.$store.dispatch("analyzeStatements", [...files]);
     }
   }
@@ -52,34 +58,53 @@ export default {
 .drop {
   width: 100%;
   height: 100%;
-  border: 1px solid red;
-}
-.text-reader {
-  width: 100px;
-  height: 3rem;
+  // border: 1px solid red;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   position: relative;
-  overflow: hidden;
-  display: inline-block;
+  justify-content: center;
+}
 
-  /* Fancy button style 😎 */
-  border: 2px solid black;
-  border-radius: 5px;
-  padding: 8px 12px;
-  cursor: pointer;
-}
-.text-reader input {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: -1;
-  opacity: 0;
-}
 .home {
   height: 100%;
   width: 100%;
 }
+.properties-container {
+  padding-top: 2rem;
+  height: 100%;
+}
+
 .dragMessage {
+  // height: 100%;
+  // align-content: center;
+  // position: absolute;
+  // top: 45%;
   text-align: center;
+  text-decoration: none;
+  padding: 0rem 5rem;
+  font-weight: 300;
+  color: rgba(0, 0, 0, 0.7);
+  // text-align: center;
+}
+
+#loading {
+  position: absolute;
+  // display: flex;
+  // flex-direction: column;
+  // align-items: center;
+  // align-content: center;
+  // justify-content: center;
+  // justify-items: center;
+  text-align: center;
+  // top: 40%;
+  width: 100%;
+  height: 100%;
+  background-color: #90a4ae !important;
+  z-index: 10;
+}
+.loading__content {
+  font-size: 3rem;
 }
 </style>
 

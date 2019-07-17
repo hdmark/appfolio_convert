@@ -16,7 +16,7 @@ module.exports = {
         src: resolveSrc('src'),
         assets: resolveSrc('src/assets'),
       },
-      extensions: ['*', '.mjs', '.js', '.vue', '.json', '.gql', '.graphql'],
+      extensions: ['*', '.mjs', '.js', '.vue', '.json'],
     },
     module: {
       rules: [

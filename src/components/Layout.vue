@@ -25,26 +25,38 @@
         </v-list>
       </v-navigation-drawer>
 
-      <v-toolbar color="indigo" dark fixed app>
+      <v-toolbar color="blue-grey darken-3
+" dark fixed app>
         <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
         <v-toolbar-title>Appfolio Owner Statement Conversion Tool</v-toolbar-title>
-        <label class="text-reader">
-          Process Statements
-          <input
-            ref="file"
-            accept=".pdf"
-            multiple
-            type="file"
-            @change="loadTextFromFile"
-          />
-        </label>
-        <v-btn @click="removeAll">Remove All</v-btn>
+        <v-spacer></v-spacer>
+        <v-toolbar-items>
+          <v-btn
+            @click.native="$refs.file.click()"
+            color="light-blue lighten-4"
+            class="text-reader"
+            flat
+            small
+          >
+            Upload
+            <input ref="file" accept=".pdf" multiple type="file" @change="loadTextFromFile" />
+          </v-btn>
+
+          <v-btn @click="removeAll" color="red lighten-1" class="remove" flat small>
+            <strong>Remove All</strong>
+          </v-btn>
+        </v-toolbar-items>
       </v-toolbar>
       <v-content>
         <router-view></router-view>
       </v-content>
-      <v-footer color="indigo" app>
-        <span class="white--text">&copy; Copyright Mark And Min</span>
+      <v-footer class="footer" color="blue-grey darken-3" app>
+        <a :href="'//' + 'paypal.me/lvmgmt'" target="_blank">
+          <v-btn small>Donate</v-btn>
+        </a>
+        Donations are not expected but who are we to stop you!
+        <v-spacer></v-spacer>
+        <span class="white--text">&copy; Copyright Mark and Min</span>&nbsp;&nbsp;&nbsp;
       </v-footer>
     </v-app>
   </v-app>
@@ -72,4 +84,36 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+.text-reader {
+  // width: 100px;
+  // height: 3rem;
+  // position: relative;
+  // overflow: hidden;
+  // display: inline-block;
+
+  /* Fancy button style 😎 */
+  // border: 2px solid black;
+  // border-radius: 5px;
+  // padding: 8px 12px;
+  // cursor: pointer;
+}
+.text-reader input {
+  // width: 100%;
+  // height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  opacity: 0;
+}
+.footer {
+  padding: 0.5rem;
+}
+.remove {
+  // font-weight: 500
+}
+</style>
+
 
