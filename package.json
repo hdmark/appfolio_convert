@@ -9,6 +9,7 @@
   "dependencies": {
     "babel-runtime": "^6.26.0",
     "core-js": "^2.6.5",
+    "lodash": "^4.17.15",
     "pdfjs-dist": "^2.0.943",
     "vue": "^2.6.10",
     "vue-drag-drop": "^1.1.4",

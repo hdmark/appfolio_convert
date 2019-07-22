@@ -7,8 +7,8 @@
         <div>
           Property: {{prop.property}} -
           Period: {{prop.period}}
-          <v-btn small @click.native.stop="downloadCSV(prop)" class="download-btn" color="success">
-            Download CSV &nbsp;&nbsp;&nbsp;
+          <v-btn small @click.native.stop="downloadQBO(prop)" class="download-btn" color="success">
+            Download QBO &nbsp;&nbsp;&nbsp;
             <v-icon color="primary">save_alt</v-icon>
           </v-btn>
           <!--  -->
@@ -22,6 +22,7 @@
 </template>
 <script>
 import property from "@/components/Property";
+import generateOFX from "@/util/qbo";
 export default {
   props: ["propertyData"],
   components: {
@@ -31,55 +32,71 @@ export default {
     return {};
   },
   methods: {
-    convertArrayOfObjectsToCSV(args) {
-      var result, ctr, keys, columnDelimiter, lineDelimiter, data;
+    // convertArrayOfObjectsToCSV(args) {
+    //   var result, ctr, keys, columnDelimiter, lineDelimiter, data;
 
-      data = args.data || null;
-      if (data == null || !data.length) {
-        return null;
-      }
+    //   data = args.data || null;
+    //   if (data == null || !data.length) {
+    //     return null;
+    //   }
 
-      columnDelimiter = args.columnDelimiter || ",";
-      lineDelimiter = args.lineDelimiter || "\n";
+    //   columnDelimiter = args.columnDelimiter || ",";
+    //   lineDelimiter = args.lineDelimiter || "\n";
 
-      keys = Object.keys(data[0]);
+    //   keys = Object.keys(data[0]);
 
-      result = "";
-      result += keys.join(columnDelimiter);
-      result += lineDelimiter;
+    //   result = "";
+    //   result += keys.join(columnDelimiter);
+    //   result += lineDelimiter;
 
-      data.forEach(function(item) {
-        ctr = 0;
-        keys.forEach(function(key) {
-          if (ctr > 0) result += columnDelimiter;
+    //   data.forEach(function(item) {
+    //     ctr = 0;
+    //     keys.forEach(function(key) {
+    //       if (ctr > 0) result += columnDelimiter;
 
-          result += '"' + item[key] + '"';
-          ctr++;
-        });
-        result += lineDelimiter;
-      });
+    //       result += '"' + item[key] + '"';
+    //       ctr++;
+    //     });
+    //     result += lineDelimiter;
+    //   });
 
-      return result;
-    },
-    downloadCSV(property) {
+    //   return result;
+    // },
+    downloadQBO(property) {
       var data, filename, link;
-      var csv = this.convertArrayOfObjectsToCSV({
-        data: property.txs
-      });
-      if (csv == null) return;
+      var ofx = generateOFX(property.txs);
 
-      filename = `${property.property}.csv` || "export.csv";
+      if (ofx == null) return;
+      filename = `${property.property}.qbo` || "export.qbo";
+      // console.log(filename);
 
-      if (!csv.match(/^data:text\/csv/i)) {
-        csv = "data:text/csv;charset=utf-8," + csv;
-      }
-      data = encodeURI(csv);
+      data = encodeURI(ofx);
+      // console.log("data", data);
 
       link = document.createElement("a");
-      link.setAttribute("href", data);
+      link.setAttribute("href", "data:text/qbo;charset=utf-8," + data);
       link.setAttribute("download", filename);
       link.click();
     }
+    // downloadCSV(property) {
+    //   var data, filename, link;
+    //   var csv = this.convertArrayOfObjectsToCSV({
+    //     data: property.txs
+    //   });
+    //   if (csv == null) return;
+
+    //   filename = `${property.property}.csv` || "export.csv";
+
+    //   if (!csv.match(/^data:text\/csv/i)) {
+    //     csv = "data:text/csv;charset=utf-8," + csv;
+    //   }
+    //   data = encodeURI(csv);
+
+    //   link = document.createElement("a");
+    //   link.setAttribute("href", data);
+    //   link.setAttribute("download", filename);
+    //   link.click();
+    // }
   }
 };
 </script>

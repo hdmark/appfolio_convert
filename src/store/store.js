@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import { parser } from '../util/parse';
+import generateOFX from '../util/qbo';
 
 //import router from '../router/router';
 
@@ -31,7 +32,6 @@ export default new Vuex.Store({
   actions: {
     // add property takes in a property , analyzes and then if good, mutates the propertyData
     async analyzeStatements({ commit, state }, files) {
-      console.log(files);
       for (let file of files) {
         if (file.type == 'application/pdf') {
           let properties = await parser(file);
@@ -41,7 +41,7 @@ export default new Vuex.Store({
         }
       }
 
-      console.log('state', state.propertyData);
+      // console.log('state', state.propertyData);
     },
     async clearProperties({ commit, state }) {
       commit('clearProperties');

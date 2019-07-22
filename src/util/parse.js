@@ -68,8 +68,11 @@ let processPDF = text => {
           table.push(row);
         } else if (x > bounds['Expense']) {
           row.expense += str;
+          row.amount -= parseFloat(str.replace(',', ''));
+          // console.log(row.amount, str);
         } else if (x > bounds['Income']) {
           row.income += str;
+          row.amount += parseFloat(str.replace(',', ''));
         } else if (x > bounds['Description']) {
           row.desc += ` ${str}`;
         } else if (x > bounds['Reference']) {
@@ -88,6 +91,7 @@ let processPDF = text => {
             income: '',
             expense: '',
             balance: '',
+            amount: 0,
           };
           row.date = str;
         }
