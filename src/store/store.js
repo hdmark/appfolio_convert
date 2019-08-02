@@ -24,6 +24,9 @@ export default new Vuex.Store({
     clearProperties(state, payload) {
       state.propertyData = [];
     },
+    clearProperty(state, payload) {
+      state.propertyData.splice(payload.index, 1);
+    },
     // saveCoins(state, payload) {
     //   // save list of coin data to state
     //   state.coinsSummary = payload.coinsSummary;
@@ -45,6 +48,9 @@ export default new Vuex.Store({
     },
     async clearProperties({ commit, state }) {
       commit('clearProperties');
+    },
+    async clearProperty({ commit, state }, index) {
+      commit('clearProperty', { index });
     },
     // async fetchCoinsSummary({ commit, state }) {
     //   // fetches information on all of the coins

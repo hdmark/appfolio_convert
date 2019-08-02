@@ -2,8 +2,8 @@ const OFX_HEADER = `OFXHEADER:100
 DATA:OFXSGML
 VERSION:102
 SECURITY:NONE
-ENCODING:UTF-8
-CHARSET:NONE
+ENCODING:USASCII
+CHARSET:1252
 COMPRESSION:NONE
 OLDFILEUID:NONE
 NEWFILEUID:NONE
@@ -11,32 +11,40 @@ NEWFILEUID:NONE
   <SIGNONMSGSRSV1>
     <SONRS>
       <STATUS>
-        <CODE>0</CODE>
-        <SEVERITY>INFO</SEVERITY>
+        <CODE>0
+        <SEVERITY>INFO
+        <MESSAGE>SUCCESS
       </STATUS>
-      <DTSERVER>20150831</DTSERVER>
-      <LANGUAGE>ENG</LANGUAGE>
+      <DTSERVER>20190722175849.530[-7:PDT]
+      <LANGUAGE>ENG
+      <FI>
+        <ORG>WF
+        <FID>3000
+      </FI>
+      <INTU.BID>3000
     </SONRS>
   </SIGNONMSGSRSV1>
   <BANKMSGSRSV1>
     <STMTTRNRS>
-      <TRNUID>1</TRNUID>
+      <TRNUID>0
       <STATUS>
-        <CODE>0</CODE>
-        <SEVERITY>INFO</SEVERITY>
+        <CODE>0
+        <SEVERITY>INFO
+        <MESSAGE>SUCCESS
       </STATUS>
       <STMTRS>
-        <CURDEF>USD</CURDEF>
+        <CURDEF>USD
         <BANKACCTFROM>
-          <BANKID>72277143</BANKID>
-          <ACCTID>72277141</ACCTID>
-          <ACCTTYPE>CHECKING</ACCTTYPE>
+          <BANKID>031000503
+          <ACCTID>{{acct_id}}
+          <ACCTTYPE>CHECKING
         </BANKACCTFROM>
         <BANKTRANLIST>
+        <DTSTART>20190423110000.000[-7:PDT]<DTEND>20190716110000.000[-7:PDT]
           {{transactions}}
         </BANKTRANLIST>
         <LEDGERBAL>
-          <BALAMT>0,00</BALAMT>
+          <BALAMT>0.00</BALAMT>
           <DTASOF>20150831</DTASOF>
         </LEDGERBAL>
       </STMTRS>
@@ -47,12 +55,12 @@ NEWFILEUID:NONE
 
 const OFX_TRANSACTION = `
 <STMTTRN>
-    <TRNTYPE>OTHER</TRNTYPE>
-    <DTPOSTED>{{date}}</DTPOSTED>
-    <TRNAMT>{{amount}}</TRNAMT>
-    <FITID>{{id}}</FITID>
-    <NAME>{{name}}</NAME>
-    <MEMO>{{memo}}</MEMO>
+    <TRNTYPE>PAYMENT
+    <DTPOSTED>{{date}}
+    <TRNAMT>{{amount}}
+    <FITID>{{id}}
+    <NAME>{{name}}
+    <MEMO>{{memo}}
 </STMTTRN>`;
 
 function getName(rowData) {
@@ -73,7 +81,7 @@ function getDate(rowData) {
   return y + m + d;
 }
 
-function generateOfx(csvRows) {
+function generateOfx(csvRows, acct_id) {
   // console.log('hi', csvRows);
   let ofxTransactions = '';
 
@@ -82,11 +90,15 @@ function generateOfx(csvRows) {
     ofxTransactions += OFX_TRANSACTION.replace('{{date}}', getDate(rowData))
       .replace('{{amount}}', rowData.amount)
       .replace('{{id}}', index)
-      .replace('{{name}}', rowData.payee) //getName(rowData));
-      .replace('{{memo}}', rowData.desc);
+      .replace('{{name}}', rowData.payee.substring(0, 31)) //getName(rowData));
+      .replace('{{memo}}', rowData.desc.substring(0, 254));
   }
 
-  return OFX_HEADER.replace('{{transactions}}', ofxTransactions);
+  // account id - 11 digits
+  return OFX_HEADER.replace(
+    '{{acct_id}}',
+    `${acct_id}`.padStart(11, '0'),
+  ).replace('{{transactions}}', ofxTransactions);
 }
 
 export default generateOfx;

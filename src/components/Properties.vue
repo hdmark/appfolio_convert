@@ -7,10 +7,25 @@
         <div>
           Property: {{prop.property}} -
           Period: {{prop.period}}
-          <v-btn small @click.native.stop="downloadQBO(prop)" class="download-btn" color="success">
+          <input
+            @click.stop
+            type="number"
+            v-model.number="prop.acct_id"
+            placeholder="acct_id"
+          />
+          <v-btn
+            small
+            @click.native.stop="downloadQBO(prop, prop.acct_id )"
+            class="download-btn"
+            color="success"
+          >
             Download QBO &nbsp;&nbsp;&nbsp;
             <v-icon color="primary">save_alt</v-icon>
           </v-btn>
+          <v-btn class="remove-btn" small @click.native.stop="remove(idx)" color="red">
+            <v-icon color="primary">close</v-icon>
+          </v-btn>
+
           <!--  -->
         </div>
       </template>
@@ -62,10 +77,11 @@ export default {
 
     //   return result;
     // },
-    downloadQBO(property) {
+    downloadQBO(property, acct_id) {
       var data, filename, link;
-      var ofx = generateOFX(property.txs);
-
+      console.log(acct_id);
+      var ofx = generateOFX(property.txs, acct_id);
+      console.log(ofx);
       if (ofx == null) return;
       filename = `${property.property}.qbo` || "export.qbo";
       // console.log(filename);
@@ -77,6 +93,9 @@ export default {
       link.setAttribute("href", "data:text/qbo;charset=utf-8," + data);
       link.setAttribute("download", filename);
       link.click();
+    },
+    remove(idx) {
+      this.$store.dispatch("clearProperty", { idx });
     }
     // downloadCSV(property) {
     //   var data, filename, link;
@@ -103,6 +122,10 @@ export default {
 
 <style lang="scss" scoped>
 .download-btn {
+  float: right;
+}
+
+.remove-btn {
   float: right;
 }
 </style>
