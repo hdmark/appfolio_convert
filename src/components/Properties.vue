@@ -13,6 +13,7 @@
             v-model.number="prop.acct_id"
             placeholder="acct_id"
           />
+
           <v-btn
             small
             @click.native.stop="downloadQBO(prop, prop.acct_id )"
@@ -81,12 +82,13 @@ export default {
       var data, filename, link;
       console.log(acct_id);
       var ofx = generateOFX(property.txs, acct_id);
-      console.log(ofx);
+      // console.log(ofx);
       if (ofx == null) return;
       filename = `${property.property}.qbo` || "export.qbo";
       // console.log(filename);
 
-      data = encodeURI(ofx);
+      data = encodeURIComponent(ofx);
+      // console.log(data);
       // console.log("data", data);
 
       link = document.createElement("a");
@@ -127,6 +129,7 @@ export default {
 
 .remove-btn {
   float: right;
+  width: 1rem;
 }
 </style>
 
