@@ -39,6 +39,8 @@ let processPDF = text => {
     Income: 0,
     Expense: 0,
     Balance: 0,
+    'Cash In': 0,
+    'Cash Out': 0,
   };
   // console.log(text);
   let prevStr = '';
@@ -47,7 +49,7 @@ let processPDF = text => {
     let str = l.str.trim();
     let x = l.transform[4];
     // if were inside of a table
-    // console.log(str, x, Object.keys(bounds).includes(str), insideTable);
+    console.log(str, x, Object.keys(bounds).includes(str), insideTable);
 
     if (insideTable) {
       // check for last row
@@ -107,7 +109,13 @@ let processPDF = text => {
     } else if (prevStr == 'Period:') {
       period = str;
     } else if (Object.keys(bounds).includes(str)) {
-      bounds[str] = x - 10;
+      if (str == 'Cash In') {
+        bounds['Income'] = x - 10;
+      } else if (str == 'Cash Out') {
+        bounds['Expense'] = x - 10;
+      } else {
+        bounds[str] = x - 10;
+      }
     }
     prevStr = str;
   }
