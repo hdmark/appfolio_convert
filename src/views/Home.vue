@@ -1,5 +1,18 @@
 <template>
-  <drop class="drop" @drop="handleDrop">
+  <div class="main">
+    <v-img
+      height="100%"
+      class="main-bg"
+      dark
+      :src="require('@/assets/architecture-buildings-city-417192.jpg')"
+      gradient="to top right,rgba(55,71,79, 0.7), rgba(55,71,79, 0.4)"
+    ></v-img>
+
+    <div class="header">
+      <div class="header__primary">A working Collection of tools to help real estate investors</div>
+      <div class="header__secondary"></div>
+    </div>
+    <!-- <drop class="drop" @drop="handleDrop">
     <v-alert id="loading" v-model="loading">
       <v-content class="loading__content">LOADING</v-content>
     </v-alert>
@@ -11,100 +24,45 @@
       into this area
       or click Upload
     </h1>
-  </drop>
+    </drop>-->
+  </div>
 </template>
 
 <script>
 // @ is an alias to /src
 
-import properties from "@/components/Properties";
-import { parser } from "../util/parse";
-import { Drop } from "vue-drag-drop";
+// import properties from "@/components/Properties";
+// import { parser } from "../util/parse";
+// import { Drop } from "vue-drag-drop";
 export default {
-  name: "home",
-  components: {
-    // vueDropzone: vue2Dropzone,
-    properties,
-    Drop
-  },
-
-  data: function() {
-    return {
-      loading: false
-    };
-  },
-  computed: {
-    propertyData() {
-      this.loading = false;
-      return this.$store.getters.properties;
-    }
-  },
-
-  methods: {
-    async handleDrop(data, event) {
-      console.log("data", data);
-      this.loading = true;
-      event.preventDefault();
-      const files = event.dataTransfer.files;
-      if (files[0].type == "application/pdf") {
-        this.loading = true;
-      }
-      this.$store.dispatch("analyzeStatements", [...files]);
-    }
-  }
+  name: "home"
 };
 </script>
 <style lang="scss" >
-.drop {
-  width: 100%;
+.main {
   height: 100%;
-  // border: 1px solid red;
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: relative;
   justify-content: center;
 }
-
-.home {
+.main-bg {
   height: 100%;
   width: 100%;
-}
-.properties-container {
-  padding-top: 2rem;
-  height: 100%;
-}
-
-.dragMessage {
-  // height: 100%;
-  // align-content: center;
-  // position: absolute;
-  // top: 45%;
-  text-align: center;
-  text-decoration: none;
-  padding: 0rem 5rem;
-  font-weight: 300;
-  color: rgba(0, 0, 0, 0.7);
-  // text-align: center;
-}
-
-#loading {
   position: absolute;
-  // display: flex;
-  // flex-direction: column;
-  // align-items: center;
-  // align-content: center;
-  // justify-content: center;
-  // justify-items: center;
-  text-align: center;
-  // top: 40%;
-  width: 100%;
-  height: 100%;
-  background-color: #90a4ae !important;
-  z-index: 10;
 }
-.loading__content {
-  font-size: 3rem;
+.header {
+  position: relative;
+  top: -3rem;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  &__primary {
+    text-align: center;
+    width: 80%;
+    font-size: 4rem;
+    color: white;
+  }
 }
 </style>
 

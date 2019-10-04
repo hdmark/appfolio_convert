@@ -11,6 +11,7 @@
 // const Wallet = () =>
 //   import(/* webpackChunkName: "wallet" */ 'src/pages/Wallet/Wallet.vue');
 const Home = () => import('../views/Home.vue');
+const Appfolio = () => import('../views/Appfolio.vue');
 
 const About = () => import('../views/About.vue');
 const routes = [
@@ -18,6 +19,11 @@ const routes = [
     path: '/',
     name: 'home',
     component: Home,
+  },
+  {
+    path: '/appfolio',
+    name: 'appfolio',
+    component: Appfolio,
   },
 
   {

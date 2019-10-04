@@ -16,6 +16,7 @@
 
           <v-btn
             small
+            rounded
             @click.native.stop="downloadQBO(prop, prop.acct_id )"
             class="download-btn"
             color="success"
@@ -129,7 +130,7 @@ export default {
 
 .remove-btn {
   float: right;
-  width: 1rem;
+  // width: 1rem;
 }
 </style>
 

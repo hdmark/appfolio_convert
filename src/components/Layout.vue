@@ -28,9 +28,9 @@
       <v-toolbar color="blue-grey darken-3
 " dark fixed app>
         <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-        <v-toolbar-title>Appfolio Owner Statement Conversion Tool</v-toolbar-title>
+        <v-toolbar-title>Real Estate Web Tools</v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-toolbar-items>
+        <!-- <v-toolbar-items>
           <v-btn
             @click.native="$refs.file.click()"
             color="light-blue lighten-4"
@@ -45,7 +45,7 @@
           <v-btn @click="removeAll" color="red lighten-1" class="remove" flat small>
             <strong>Remove All</strong>
           </v-btn>
-        </v-toolbar-items>
+        </v-toolbar-items>-->
       </v-toolbar>
       <v-content>
         <router-view></router-view>
@@ -67,7 +67,12 @@ export default {
     return {
       drawer: false,
       items: [
-        { title: "Home", icon: "dashboard", path: "/" },
+        { title: "Home", icon: "home", path: "/" },
+        {
+          title: "Owners Statement",
+          icon: "account_balance",
+          path: "/appfolio"
+        },
         { title: "About", icon: "question_answer", path: "/about" }
       ],
       right: null
