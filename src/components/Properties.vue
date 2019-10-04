@@ -5,13 +5,18 @@
 
       <template v-slot:header>
         <div>
-          Property: {{prop.property}} -
-          Period: {{prop.period}}
+          <strong>Property:</strong>
+          {{prop.property}}
+          -
+          <strong>Period:</strong>
+          {{prop.period}}
+          -
+          <strong>Quickbooks Account Number: &nbsp;</strong>
           <input
             @click.stop
             type="number"
             v-model.number="prop.acct_id"
-            placeholder="acct_id"
+            :placeholder="prop.acct_id || 'QB Acct Num'"
           />
 
           <v-btn
@@ -21,7 +26,7 @@
             class="download-btn"
             color="success"
           >
-            Download QBO &nbsp;&nbsp;&nbsp;
+            QBO &nbsp;&nbsp;&nbsp;
             <v-icon color="primary">save_alt</v-icon>
           </v-btn>
           <v-btn class="remove-btn" small @click.native.stop="remove(idx)" color="red">
@@ -49,39 +54,10 @@ export default {
     return {};
   },
   methods: {
-    // convertArrayOfObjectsToCSV(args) {
-    //   var result, ctr, keys, columnDelimiter, lineDelimiter, data;
-
-    //   data = args.data || null;
-    //   if (data == null || !data.length) {
-    //     return null;
-    //   }
-
-    //   columnDelimiter = args.columnDelimiter || ",";
-    //   lineDelimiter = args.lineDelimiter || "\n";
-
-    //   keys = Object.keys(data[0]);
-
-    //   result = "";
-    //   result += keys.join(columnDelimiter);
-    //   result += lineDelimiter;
-
-    //   data.forEach(function(item) {
-    //     ctr = 0;
-    //     keys.forEach(function(key) {
-    //       if (ctr > 0) result += columnDelimiter;
-
-    //       result += '"' + item[key] + '"';
-    //       ctr++;
-    //     });
-    //     result += lineDelimiter;
-    //   });
-
-    //   return result;
-    // },
     downloadQBO(property, acct_id) {
       var data, filename, link;
       console.log(acct_id);
+      localStorage.setItem(property.property, acct_id);
       var ofx = generateOFX(property.txs, acct_id);
       // console.log(ofx);
       if (ofx == null) return;
@@ -100,25 +76,6 @@ export default {
     remove(idx) {
       this.$store.dispatch("clearProperty", { idx });
     }
-    // downloadCSV(property) {
-    //   var data, filename, link;
-    //   var csv = this.convertArrayOfObjectsToCSV({
-    //     data: property.txs
-    //   });
-    //   if (csv == null) return;
-
-    //   filename = `${property.property}.csv` || "export.csv";
-
-    //   if (!csv.match(/^data:text\/csv/i)) {
-    //     csv = "data:text/csv;charset=utf-8," + csv;
-    //   }
-    //   data = encodeURI(csv);
-
-    //   link = document.createElement("a");
-    //   link.setAttribute("href", data);
-    //   link.setAttribute("download", filename);
-    //   link.click();
-    // }
   }
 };
 </script>

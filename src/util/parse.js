@@ -29,6 +29,7 @@ let processPDF = text => {
   let props = [];
   let property = '';
   let period = '';
+  let acct_id = '';
 
   let bounds = {
     Date: 0,
@@ -49,7 +50,7 @@ let processPDF = text => {
     let str = l.str.trim();
     let x = l.transform[4];
     // if were inside of a table
-    console.log(str, x, Object.keys(bounds).includes(str), insideTable);
+    // console.log(str, x, Object.keys(bounds).includes(str), insideTable);
 
     if (insideTable) {
       // check for last row
@@ -57,7 +58,12 @@ let processPDF = text => {
         // if last row, turn off table, push to properties, clear table
         insideTable = false;
         balance = null;
-        props.push({ property, period, txs: table });
+        props.push({
+          property: property || 'Unknown Property',
+          period: period || 'n/a',
+          txs: table,
+          acct_id,
+        });
       } else if (balance == null) {
         // first row between beginning balance and real data
         balance = parseFloat(str.replace(/,/g, ''));
@@ -106,6 +112,9 @@ let processPDF = text => {
       table = [];
     } else if (prevStr == 'Properties') {
       property = str;
+      if (localStorage.getItem(property)) {
+        acct_id = localStorage.getItem(property);
+      }
     } else if (prevStr == 'Period:') {
       period = str;
     } else if (Object.keys(bounds).includes(str)) {
@@ -123,29 +132,29 @@ let processPDF = text => {
   return props;
 };
 
-function fixLines(pageData) {
-  let lastX,
-    text = '';
-  let textArr = [];
-  let temp = '';
-  let x = 0;
-  // let flag = false;
-  for (let item of pageData.items) {
-    if (lastX == item.transform[4] || !lastX) {
-      //text += ' ' + item.str;
-      temp += ' ' + item.str;
-    } else {
-      //text += '\n' + item.str;
-      // THIS CAN BE REPLACED WITH THE FUNCTION CALL OF THE PROCESSING DOWN BELOW
-      textArr.push({ str: temp, x: lastX });
-      temp = item.str;
-    }
-    lastX = item.transform[4];
-  }
-  // text = text + '\n';
-  // textArr.push({ str: temp, x: lastX });
-  return textArr;
-}
+// function fixLines(pageData) {
+//   let lastX,
+//     text = '';
+//   let textArr = [];
+//   let temp = '';
+//   let x = 0;
+//   // let flag = false;
+//   for (let item of pageData.items) {
+//     if (lastX == item.transform[4] || !lastX) {
+//       //text += ' ' + item.str;
+//       temp += ' ' + item.str;
+//     } else {
+//       //text += '\n' + item.str;
+//       // THIS CAN BE REPLACED WITH THE FUNCTION CALL OF THE PROCESSING DOWN BELOW
+//       textArr.push({ str: temp, x: lastX });
+//       temp = item.str;
+//     }
+//     lastX = item.transform[4];
+//   }
+//   // text = text + '\n';
+//   // textArr.push({ str: temp, x: lastX });
+//   return textArr;
+// }
 let render_options = {
   //replaces all occurrences of whitespace with standard spaces (0x20). The default value is `false`.
   normalizeWhitespace: true,

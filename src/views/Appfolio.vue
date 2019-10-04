@@ -58,7 +58,6 @@ import { Drop } from "vue-drag-drop";
 export default {
   name: "home",
   components: {
-    // vueDropzone: vue2Dropzone,
     properties,
     Drop
   },
