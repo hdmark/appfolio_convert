@@ -81,6 +81,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  margin: 0;
+}
 .download-btn {
   float: right;
 }

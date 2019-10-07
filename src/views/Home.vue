@@ -1,12 +1,12 @@
 <template>
   <div class="main">
-    <v-img
+    <!-- <v-img
       height="100%"
       class="main-bg"
       dark
       :src="require('@/assets/architecture-buildings-city-417192.jpg')"
       gradient="to top right,rgba(55,71,79, 0.7), rgba(55,71,79, 0.4)"
-    ></v-img>
+    ></v-img>-->
 
     <div class="header">
       <div class="header__primary">A working Collection of tools to help real estate investors</div>
@@ -45,6 +45,12 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  // background-color: red;
+  background-image: linear-gradient(
+    to top right,
+    rgba(55, 71, 79, 0.7),
+    rgba(55, 71, 79, 0.4)
+  );
 }
 .main-bg {
   height: 100%;
