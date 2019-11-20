@@ -9,7 +9,7 @@
     ></v-img>-->
 
     <div class="header">
-      <div class="header__primary">A working Collection of tools to help real estate investors</div>
+      <div class="header__primary">A Working Collection of Tools to Help Real Estate Investors</div>
       <div class="header__secondary"></div>
     </div>
     <!-- <drop class="drop" @drop="handleDrop">

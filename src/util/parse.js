@@ -91,14 +91,14 @@ let processPDF = text => {
           row.payee += ` ${str}`;
         } else if (x > bounds['Date']) {
           row = {
-            date: '',
-            payee: '',
-            type: '',
-            ref: '',
-            desc: '',
-            income: '',
-            expense: '',
-            balance: '',
+            date: '01/01/1900',
+            payee: 'placeholder',
+            type: 'placeholder',
+            ref: 'placeholder',
+            desc: 'placeholder',
+            income: '0',
+            expense: '0',
+            balance: '0',
             amount: 0,
           };
           row.date = str;

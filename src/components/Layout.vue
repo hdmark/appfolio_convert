@@ -1,7 +1,7 @@
 <template>
   <v-app id="app">
     <v-app id="inspire">
-      <v-navigation-drawer temporary v-model="drawer" app>
+      <v-navigation-drawer v-model="drawer" app>
         <v-toolbar flat>
           <v-list>
             <!-- <v-list-tile>
