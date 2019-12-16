@@ -73,6 +73,16 @@ let processPDF = text => {
 
         if (x > bounds['Balance']) {
           row.balance += str;
+          row.date = row.date != '' ? row.date : '1/1/1900';
+          row.payee = row.payee != '' ? row.payee : 'empty';
+          row.type = row.type != '' ? row.type : 'empty';
+          row.ref = row.ref != '' ? row.ref : 'empty';
+          row.desc = row.desc != '' ? row.desc : 'empty';
+          //row.income = row.income != '' ? row.income : '0';
+          //row.expense = row.expense != '' ? row.expense : '0';
+          //row.balance = row.balance != '' ? row.balance : '0';
+          //row.amount = row.amount != 0 ? row.amount : 0;
+
           table.push(row);
         } else if (x > bounds['Expense']) {
           row.expense += str;
@@ -91,14 +101,14 @@ let processPDF = text => {
           row.payee += ` ${str}`;
         } else if (x > bounds['Date']) {
           row = {
-            date: '01/01/1900',
-            payee: 'placeholder',
-            type: 'placeholder',
-            ref: 'placeholder',
-            desc: 'placeholder',
-            income: '0',
-            expense: '0',
-            balance: '0',
+            date: '',
+            payee: '',
+            type: '',
+            ref: '',
+            desc: '',
+            income: '',
+            expense: '',
+            balance: '',
             amount: 0,
           };
           row.date = str;
