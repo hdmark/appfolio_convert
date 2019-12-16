@@ -12,7 +12,7 @@ let readPDF = file => {
         let _page = await _pdf.getPage(p);
         // get page 1 text
         let _pageText = await _page.getTextContent(render_options);
-        //text.push(...fixLines(_pageText));
+
         text.push(..._pageText.items);
       }
 
@@ -30,6 +30,7 @@ let processPDF = text => {
   let property = '';
   let period = '';
   let acct_id = '';
+  let remitFlag = false;
 
   let bounds = {
     Date: 0,
@@ -45,13 +46,17 @@ let processPDF = text => {
   };
   // console.log(text);
   let prevStr = '';
+  // console.log(text);
   for (let l of text) {
     // trim the text of whitespace
     let str = l.str.trim();
     let x = l.transform[4];
+    if (remitFlag == true) {
+      remitFlag = false;
+      continue;
+    }
     // if were inside of a table
     // console.log(str, x, Object.keys(bounds).includes(str), insideTable);
-
     if (insideTable) {
       // check for last row
       if (str.indexOf('Ending Cash Balance') === 0) {
@@ -64,6 +69,9 @@ let processPDF = text => {
           txs: table,
           acct_id,
         });
+      } else if (str.indexOf('Please Remit') === 0) {
+        remitFlag = true;
+        continue;
       } else if (balance == null) {
         // first row between beginning balance and real data
         balance = parseFloat(str.replace(/,/g, ''));
@@ -120,13 +128,19 @@ let processPDF = text => {
       // mark that were in a table
       insideTable = true;
       table = [];
+
+      // grab property name
     } else if (prevStr == 'Properties') {
       property = str;
       if (localStorage.getItem(property)) {
         acct_id = localStorage.getItem(property);
       }
+
+      // grab period of report
     } else if (prevStr == 'Period:') {
       period = str;
+
+      // grab bounds of the columns
     } else if (Object.keys(bounds).includes(str)) {
       if (str == 'Cash In') {
         bounds['Income'] = x - 10;
