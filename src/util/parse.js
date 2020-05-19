@@ -269,7 +269,7 @@ let processPDF = (text) => {
         //if not
 
         if (x > bounds['Balance']) {
-          row.balance += str;
+          row.balance = row.balance == null || row.balance == '' ? str : row.balance;
           row.date = row.date != '' ? row.date : '1/1/1900';
           row.payee = row.payee != '' ? row.payee : 'empty';
           row.type = row.type != '' ? row.type : 'empty';
